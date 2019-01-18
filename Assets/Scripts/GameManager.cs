@@ -11,19 +11,25 @@ public class GameManager : MonoBehaviour
 
     bool isTrackCompleted; // flag for checking completion
 
-    public GameObject audioSelector;
+    AudioSource audioSource;
+
+    public BallPosition ballPosition;
+
+ //   public GameObject audioSelector;
 
     void Start()
     {
 
       isTrackCompleted = false;
 
+      audioSource = gameObject.GetComponent<AudioSource>();
+
       trackObjects = GameObject.FindGameObjectsWithTag("TrackObject");
 
         foreach(GameObject trackObject in trackObjects)
         {
             Debug.Log(trackObject.name + " found.");
-            objectsCleared[trackObject] = false;
+            // objectsCleared[trackObject.Value] = false; // broken
         }   
 
        // audioSelector = gameObject.FindGameObject("AudioSelector").GetComponent<AudioSelector>();
@@ -38,26 +44,35 @@ public class GameManager : MonoBehaviour
         // if ball has hit track object (and is not grabbed at that moment by user), flag it as true in the trackObject list    
     }
 
-    public void ProcessCollision(GameObject ball, GameObject other)
+    public void ProcessCollision(GameObject ball, GameObject theObjectHitbyBall)
     {
 
-        if(other.tag == "EndPoint" && isTrackCompleted)
+        // Debug.Log(ball.name + " hit " + theObjectHitbyBall);
+
+        
+
+        if(theObjectHitbyBall.name == "BaseFloor")
+        {
+           ballPosition.ResetPosition();
+           Debug.Log("Ball reseted to starting position");
+
+
+        }
+
+        else if(theObjectHitbyBall.tag == "EndPoint" && isTrackCompleted)
         {
             TrackCompleted();
             Debug.Log("Track cleared!");
         }
-        else
+        else if(!isTrackCompleted)
         {
-            
-        }
-
-             if(trackObjects != null)
-            {
                 for (int i =0; i < trackObjects.Length ; i++)
                 {
-                    if(other == trackObjects[i])
+                    if(theObjectHitbyBall == trackObjects[i])
                     {
-                    CheckObjectOff(other); 
+                        CheckObjectOff(theObjectHitbyBall);
+
+                        Debug.Log(theObjectHitbyBall + " sent to be ticked off the list");
                     // check if all objects set on trackObjects are among objectsCleared
                     }       
                 }
@@ -66,10 +81,8 @@ public class GameManager : MonoBehaviour
             {
                 Debug.Log("You need to add objects to the track objects list in the inspector!");
             }
+        } 
         
-       
-        Debug.Log(ball.name + " hit " + other);
-    }
 
     void CheckObjectOff(GameObject obj) // mark object as true on the list
     {   
@@ -79,6 +92,7 @@ public class GameManager : MonoBehaviour
                 if(objectsCleared[obj] == false)
                 {
                    objectsCleared[obj] = true;
+                   audioSource.Play();
                    Debug.Log(obj + "cleared by ball");
 
                     // check if object 
@@ -105,7 +119,7 @@ public class GameManager : MonoBehaviour
     void TrackCompleted()
     {
         // this is called by 
-        audioSelector.PlaySFX("win");
+        //audioSelector.PlaySFX("win");
         
     }
 
