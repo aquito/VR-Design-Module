@@ -6,6 +6,7 @@ TagManager:
   tags:
   - ExcludeTeleport
   - Ball
+  - TrackObject
   layers:
   - Default
   - TransparentFX
