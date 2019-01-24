@@ -86,16 +86,18 @@ public class GameManager : MonoBehaviour
                 {
                     if(theObjectHitbyBall == trackObjects[i])
                     {
-                        clearedObjects.Add(theObjectHitbyBall); 
+                        if(!clearedObjects.Contains(theObjectHitbyBall))
+                        {
+                            clearedObjects.Add(theObjectHitbyBall); 
 
-                        trackObjectAudio = theObjectHitbyBall.GetComponent<AudioSource>(); // play audio on trackobject prefab
+                            trackObjectAudio = theObjectHitbyBall.GetComponent<AudioSource>(); // play audio on trackobject prefab
 
-                        trackObjectAudio.Play();
+                            trackObjectAudio.Play();
 
-                        Debug.Log(theObjectHitbyBall + " added to cleared objects list");
+                            Debug.Log(theObjectHitbyBall + " added to cleared objects list");
 
-                        CheckIfAllObjects();
-                    
+                            CheckIfAllObjects(theObjectHitbyBall);
+                        }
                     }       
                 }
             
@@ -108,12 +110,12 @@ public class GameManager : MonoBehaviour
 
     
 
-    void CheckIfAllObjects()  // check if there are falses left in the dictionary
+    void CheckIfAllObjects(GameObject obj)  // check if there are falses left in the dictionary
     {
        
        for (int i =0; i < clearedObjects.Count ; i++)
        {
-           if(trackObjects.Contains(clearedObjects[i]))
+           if(trackObjects.Contains(clearedObjects[i]) && clearedObjects[i] != obj)
            {
                objectsCleared++;
            }
