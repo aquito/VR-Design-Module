@@ -24,6 +24,7 @@ public class BallPosition : MonoBehaviour
         gameObject.transform.position = ballStartPosition;
         audioSource.Play();
         gameObject.GetComponent<Rigidbody>().isKinematic = false;
+        
     }
 
 }

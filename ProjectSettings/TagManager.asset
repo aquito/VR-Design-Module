@@ -8,6 +8,7 @@ TagManager:
   - Ball
   - TrackObject
   - Floor
+  - EndPoint
   layers:
   - Default
   - TransparentFX

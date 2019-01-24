@@ -8,6 +8,8 @@ public class GameManager : MonoBehaviour
     public List<GameObject> trackObjects; // array for track prefabs placed in scene
 
     private List<GameObject> clearedObjects; // array to fill with objects the ball has cleared
+    
+    int objectsCleared;
     bool isTrackCompleted; // flag for checking completion
 
     AudioSource audioSource;
@@ -16,10 +18,14 @@ public class GameManager : MonoBehaviour
 
     public BallPosition ballPosition;
 
+    GameObject goalObject;
+
  //   public GameObject audioSelector;
 
     void Start()
     {
+
+      objectsCleared = 0;
 
       isTrackCompleted = false;
 
@@ -27,6 +33,7 @@ public class GameManager : MonoBehaviour
 
       trackObjects = new List<GameObject>();
 
+      goalObject = GameObject.Find("Goal");
       // trackObjects = GameObject.FindGameObjectsWithTag("TrackObject");
 
       clearedObjects = new List<GameObject>();
@@ -54,13 +61,16 @@ public class GameManager : MonoBehaviour
     public void ProcessCollision(GameObject ball, GameObject theObjectHitbyBall)
     {
 
-        // Debug.Log(ball.name + " hit " + theObjectHitbyBall);
+        Debug.Log(ball.name + " hit " + theObjectHitbyBall);
 
         
 
         if(theObjectHitbyBall.name == "BaseFloor")
         {
            ballPosition.ResetPosition();
+           isTrackCompleted = false;
+           clearedObjects.Clear();
+           objectsCleared = 0;
            Debug.Log("Ball reseted to starting position");
 
         }
@@ -68,7 +78,7 @@ public class GameManager : MonoBehaviour
         else if(theObjectHitbyBall.tag == "EndPoint" && isTrackCompleted)
         {
             TrackCompleted();
-            Debug.Log("Track cleared!");
+            
         }
         else if(!isTrackCompleted)
         {
@@ -89,7 +99,7 @@ public class GameManager : MonoBehaviour
                     }       
                 }
             
-            } else
+            } else if(trackObjects.Count == 0)
             {
                 Debug.Log("You need to add objects to the track objects list in the inspector!");
             }
@@ -101,14 +111,32 @@ public class GameManager : MonoBehaviour
     void CheckIfAllObjects()  // check if there are falses left in the dictionary
     {
        
-       
+       for (int i =0; i < clearedObjects.Count ; i++)
+       {
+           if(trackObjects.Contains(clearedObjects[i]))
+           {
+               objectsCleared++;
+           }
+
+           if(objectsCleared == trackObjects.Count) // if number of objects cleared equals objects on track, then flag complete
+           {
+               isTrackCompleted = true;
+           }
+       }
        
     }
 
     void TrackCompleted()
     {
-        // this is called by 
-        //audioSelector.PlaySFX("win");
+        if(goalObject != null)
+        {
+            trackObjectAudio = goalObject.GetComponent<AudioSource>(); // play audio on trackobject prefab
+            trackObjectAudio.Play();
+            Debug.Log("Track completed!");
+        } else
+        {
+            Debug.Log("Goal object missing from the scene!");
+        }
         
     }
 
