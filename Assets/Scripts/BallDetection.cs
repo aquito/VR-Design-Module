@@ -22,8 +22,8 @@ public class BallDetection : MonoBehaviour
         
         if(other.gameObject.tag == "Ball")
         {
-            gameManager.ProcessCollision(other.gameObject, this.gameObject);
-
+               gameManager.ProcessCollision(other.gameObject, this.gameObject);
+           
         }
         // if other is ball, send the game object this script is attached to, to the gamemanager and it will process it according to object type (floor/prop)
     }

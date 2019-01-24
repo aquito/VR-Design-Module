@@ -43,11 +43,7 @@ public class GameManager : MonoBehaviour
             trackObjects.Add(trackObject);
             Debug.Log(trackObject.name + " found.");
 
-            // objectsCleared[trackObject.Value] = false; // broken
-        }   
-
-       // audioSelector = gameObject.FindGameObject("AudioSelector").GetComponent<AudioSelector>();
-        // audioSelector = audioSelector.FindObjectOfType<AudioSelector>() as AudioSelector;
+        }         
     }
     
     
@@ -86,9 +82,11 @@ public class GameManager : MonoBehaviour
                 {
                     if(theObjectHitbyBall == trackObjects[i])
                     {
-                        if(!clearedObjects.Contains(theObjectHitbyBall))
+                        if(!clearedObjects.Contains(theObjectHitbyBall) && theObjectHitbyBall.transform.parent == null)
                         {
                             clearedObjects.Add(theObjectHitbyBall); 
+
+                            objectsCleared++;
 
                             trackObjectAudio = theObjectHitbyBall.GetComponent<AudioSource>(); // play audio on trackobject prefab
 
@@ -115,10 +113,13 @@ public class GameManager : MonoBehaviour
        
        for (int i =0; i < clearedObjects.Count ; i++)
        {
-           if(trackObjects.Contains(clearedObjects[i]) && clearedObjects[i] != obj)
+           /*
+            if(trackObjects.Contains(clearedObjects[i]) && clearedObjects[i] != obj)
            {
-               objectsCleared++;
+               
            }
+            */
+          
 
            if(objectsCleared == trackObjects.Count) // if number of objects cleared equals objects on track, then flag complete
            {
@@ -135,6 +136,9 @@ public class GameManager : MonoBehaviour
             trackObjectAudio = goalObject.GetComponent<AudioSource>(); // play audio on trackobject prefab
             trackObjectAudio.Play();
             Debug.Log("Track completed!");
+
+            // enable particle effect
+
         } else
         {
             Debug.Log("Goal object missing from the scene!");
