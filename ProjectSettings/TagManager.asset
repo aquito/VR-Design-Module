@@ -9,6 +9,7 @@ TagManager:
   - TrackObject
   - Floor
   - EndPoint
+  - Prop
   layers:
   - Default
   - TransparentFX
