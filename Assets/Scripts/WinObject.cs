@@ -8,6 +8,12 @@ public class WinObject : MonoBehaviour
     
     public GameObject objectToBeActivated;
 
+   
+    void Start()
+    {
+        objectToBeActivated.SetActive(false);
+    }
+
     public void Win()
     {
 
