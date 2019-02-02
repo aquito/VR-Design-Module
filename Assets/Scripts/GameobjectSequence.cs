@@ -6,7 +6,8 @@ public class GameobjectSequence : MonoBehaviour
 {
    //
 
-   public Dictionary<GameObject, bool> objectsThatNeedFinding; // array to store objects and whether they have been found
+   public List<GameObject> objectsThatNeedFinding; 
+   public Dictionary<GameObject, bool> objectsThatNeedFindingStatus; // array to store objects and whether they have been found
 
     GameObject winObject;
 
@@ -15,22 +16,27 @@ public class GameobjectSequence : MonoBehaviour
    void Start()
    {
 
-
-    objectsThatNeedFinding = new Dictionary<GameObject, bool>();
+    objectsThatNeedFindingStatus = new Dictionary<GameObject, bool>();
+    // objectsThatNeedFinding = new List<GameObject>();
     audioSource = GetComponent<AudioSource>();
     winObject = GameObject.Find("WinObject");
+
+    foreach(GameObject obj in objectsThatNeedFinding)
+    {
+        objectsThatNeedFindingStatus.Add(obj, false);
+    }
 
    } 
 
    public void MarkObjectAsFound(GameObject obj) // checks if the object is in the dictionary and if it's value is false changes it to true to mark object off the list
    {
-       foreach(GameObject objectToBeFound in objectsThatNeedFinding.Keys) 
+       foreach(GameObject objectToBeFound in objectsThatNeedFindingStatus.Keys) 
        {
            if(objectToBeFound != null)
            {
-               if(obj == objectToBeFound && objectsThatNeedFinding[obj] == false)
+               if(obj == objectToBeFound && objectsThatNeedFindingStatus[obj] == false)
                 {
-                    objectsThatNeedFinding[obj] = true;
+                    objectsThatNeedFindingStatus[obj] = true;
                     Debug.Log(obj.name + " found!");
                 }
 
@@ -49,7 +55,7 @@ public class GameobjectSequence : MonoBehaviour
    public void CheckIfAllObjectsHaveBeenFound()
    {
 
-        if(objectsThatNeedFinding.ContainsValue(false))
+        if(objectsThatNeedFindingStatus.ContainsValue(false))
         {
             Debug.Log("Not all objects have been found.");
         }
