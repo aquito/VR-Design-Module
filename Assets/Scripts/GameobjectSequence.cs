@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameobjectSequence : MonoBehaviour
+public class GameObjectSequence : MonoBehaviour
 {
    //
 
