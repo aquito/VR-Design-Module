@@ -9,7 +9,7 @@ public class GameObjectSequence : MonoBehaviour
    public List<GameObject> objectsThatNeedFinding; 
    public Dictionary<GameObject, bool> objectsThatNeedFindingStatus; // array to store objects and whether they have been found
 
-    GameObject winObject;
+    WinObject winObject;
 
     AudioSource audioSource;
    
@@ -19,11 +19,12 @@ public class GameObjectSequence : MonoBehaviour
     objectsThatNeedFindingStatus = new Dictionary<GameObject, bool>();
     // objectsThatNeedFinding = new List<GameObject>();
     audioSource = GetComponent<AudioSource>();
-    winObject = GameObject.Find("WinObject");
+    winObject = GameObject.Find("WinObject").GetComponent<WinObject>();
 
     foreach(GameObject obj in objectsThatNeedFinding)
     {
         objectsThatNeedFindingStatus.Add(obj, false);
+        Debug.Log(obj + " listed as to be found.");
     }
 
    } 
@@ -32,15 +33,16 @@ public class GameObjectSequence : MonoBehaviour
    {
        foreach(GameObject objectToBeFound in objectsThatNeedFindingStatus.Keys) 
        {
-           if(objectToBeFound != null)
-           {
-               if(obj == objectToBeFound && objectsThatNeedFindingStatus[obj] == false)
+         //  if(objectToBeFound != null)
+           //{
+               if(obj == objectToBeFound) // && objectsThatNeedFindingStatus[obj] == false)
                 {
                     objectsThatNeedFindingStatus[obj] = true;
                     Debug.Log(obj.name + " found!");
+                    CheckIfAllObjectsHaveBeenFound(); 
                 }
 
-           }
+           //}
            else
            {
                Debug.Log("Found Object slot(s) empty - drag objects from the scene to the slots exposed in Inspector!");
@@ -48,7 +50,7 @@ public class GameObjectSequence : MonoBehaviour
            
        }
 
-       CheckIfAllObjectsHaveBeenFound(); 
+       
 
    }
 
@@ -63,7 +65,7 @@ public class GameObjectSequence : MonoBehaviour
         {
             Debug.Log("All objects found!");
             audioSource.Play();
-            // winObject.Win(); // activate chosen object upon win condition
+            winObject.Win(); // activate chosen object upon win condition
 
         }
        

@@ -19,7 +19,7 @@ public class GameobjectMonitor : MonoBehaviour
 
         Debug.Log(other.gameObject.name + " hit " + this.name);
         
-        objectSequence.MarkObjectAsFound(other.gameObject.GetComponent<GameObject>());
+        objectSequence.MarkObjectAsFound(other.gameObject);
         
     }
 }
