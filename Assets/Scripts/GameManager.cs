@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
     private List<GameObject> clearedObjects; // array to fill with objects the ball has cleared
     
     int objectsCleared;
-    bool isTrackCompleted; // flag for checking completion
+    public bool isTrackCompleted; // flag for checking completion
 
     AudioSource audioSource;
 
@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour
 
     GameObject goalObject;
 
- //   public GameObject audioSelector;
+    public FXmanager fxMmanager;
 
     void Start()
     {
@@ -46,13 +46,6 @@ public class GameManager : MonoBehaviour
         }         
     }
     
-    
-    void Update()
-    {
-        // monitor for collisions from balldetection script
-        // if ball has hit floor, get ball starting position and return it there with negative sound
-        // if ball has hit track object (and is not grabbed at that moment by user), flag it as true in the trackObject list    
-    }
 
     public void ProcessCollision(GameObject ball, GameObject theObjectHitbyBall)
     {
@@ -61,7 +54,7 @@ public class GameManager : MonoBehaviour
 
         
 
-        if(theObjectHitbyBall.name == "BaseFloor")
+        if(theObjectHitbyBall.name == "BaseFloor" && !isTrackCompleted)
         {
            ballPosition.ResetPosition();
            isTrackCompleted = false;
@@ -113,14 +106,7 @@ public class GameManager : MonoBehaviour
        
        for (int i =0; i < clearedObjects.Count ; i++)
        {
-           /*
-            if(trackObjects.Contains(clearedObjects[i]) && clearedObjects[i] != obj)
-           {
-               
-           }
-            */
-          
-
+           
            if(objectsCleared == trackObjects.Count) // if number of objects cleared equals objects on track, then flag complete
            {
                isTrackCompleted = true;
@@ -135,9 +121,10 @@ public class GameManager : MonoBehaviour
         {
             trackObjectAudio = goalObject.GetComponent<AudioSource>(); // play audio on trackobject prefab
             trackObjectAudio.Play();
+            goalObject.SetActive(false); 
             Debug.Log("Track completed!");
 
-            // enable particle effect
+            fxMmanager.switchFX();            // enable particle effect
 
         } else
         {
