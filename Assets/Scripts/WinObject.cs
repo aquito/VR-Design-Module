@@ -4,26 +4,48 @@ using UnityEngine;
 
 public class WinObject : MonoBehaviour
 {
-    // Start is called before the first frame update
+   
     
-    public GameObject objectToBeActivated;
+    public GameObject lightToBeActivated;
+    public GameObject doorToBeMoved;
+    MovingDoor movingDoor;
 
    
     void Start()
     {
-        objectToBeActivated.SetActive(false);
+        if(lightToBeActivated != null) // check that light has been defined in the inspector
+        {
+            lightToBeActivated.SetActive(false); // set light off to begin with
+        }
+         else
+        {
+            Debug.Log("Light from win object missing!"); 
+        }
+
+
+        if(doorToBeMoved != null) // check that door has been defined in the inspector
+        {
+            movingDoor = doorToBeMoved.GetComponent<MovingDoor>(); // get access to script on door
+        }
+         else
+        {
+            Debug.Log("Door from win object missing!"); 
+        }
+        
     }
 
     public void Win()
     {
 
-        if(objectToBeActivated != null)
+        if(lightToBeActivated != null) // check that light has been defined in the inspector
         {
-            objectToBeActivated.SetActive(true);
+            lightToBeActivated.SetActive(true); // setting light on
         }
-        else
+       
+        if(movingDoor != null) 
         {
-            Debug.Log("Win object missing!");
+            movingDoor.enabled = true;  // activating move script on door
+             Debug.Log("Opening door!");
         }
 
     }
